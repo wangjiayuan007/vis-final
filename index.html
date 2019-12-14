@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<title>Visualize the effectiveness of different learning rate</title>
+	</head>
+<body>
+
+<h1>Visualize the Gradient Descent Method for High Dimension Functions
+</h1>
+
+Gradient descent is a very popular optimization algorithm, it can be summarized in the formula x_n+1 = x_n - r_n * gradient(F), in which x_n is a point on the optimization trajectory and r_n is the learning rate. </p>
+<b>Motivation and purpose:</b> The gradient decent method will be slow if the 'zig-zagging' in the right figure below happens. We can easily visualize this behaviors for 2D functions but it is very difficult for high dimension cases.<br/>
+In our project, we hope to visualize the 'zig-zagging' of the gradient descent method on some functions and to analysis the effect of the learning rate. We only consider the situation that the learning rate r_n is fixed, meaning for all n the same r is used.</br>
+<img src="figures/gradient_descent.png",width="400" height="400" />
+<img src="figures/Banana-SteepDesc.gif",width="400" height="400" />
+<figcaption>Fig. Left is a visualization of the gradient descent algorithm. Right presents the 'zig-zagging' nature of the method.(Figures from <a href="https://en.wikipedia.org/wiki/Gradient_descent">wiki</a>)</figcaption><br/>
+
+<b>Dataset:</b>
+We collect the data points in the trace of gradient descent for optimizing two SVM algorithms. One is a linear SVM with parameter dimension of 784, and another is a kernel SVM with parameter dimension of 6107. The two SVM algorithms are applied to classify handwritten digits. The epochs of optimization is set to 1000. So there are 1000 points of 784 dim and 6107 dim respectively. Each point is associated with an error (optimization) value. </p>
+For easily understanding, just consider:<br/>
+<b>Input of gradient descent algorithm:</b> <br/>
+A high dimension function f: R^784 -> R<br/>
+Iterate for 1000 steps<br/>
+<b>Output of gradient descent algorithm:</b><br/>
+Trajectory w = w0,w1, ... ,w1000, each wi is a 1*784 dimension vector.<br/>
+Error r = (r0,r1, ... , r1000), ri is the corresponding error to wi, which is only a scalar.
+
+
+<h2>Visualize high dimension trajectories</h2>
+
+<h3>1. 1D trajectory</h3>
+
+First we just try a straightforward and naive idea: randomly take one dimension of w and plot it with the error (wi-eeror). <br/>
+Relate color with error to see how the error changes. We can see the last 500 steps concentrate in smaller areas compared with the first 500 steps.</p>
+<img src="figures/r_barchart.png",width="500" height="500" />
+<img src="figures/rand_class1D.png",width="500" height="500" /></p>
+<figcaption>Fig. Left: The bar chart of error following the order of the trajectory (r0, r1, ... , r783). Right: Random pick a dimension i of w, plot wi-error.</figcaption>
+We consider the length of the trajectories, sort all 784 trajectories by their length, then display the 9 shortest and longest ones.</p>
+
+<img src="figures/longest_class1D.png",width="500" height="500" />
+<img src="figures/shortest_class1D.png",width="500" height="500" /></p>
+<figcaption>Fig1. Left: wi-error plot of the 9 1D-trajectories with longest length. Right: With shortest length.</figcaption>
+Browse all following the order of increasing trajectory length:<br/>
+(difficult to see patterns without order)<br/>
+
+<video class="center" width="500" height="500" controls>
+  <source src="figures/plot1D2.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<h3>2. 2D trajectory</h3>
+Follow the same procedures: <br/>
+<ul>
+<li>Plot wi-wi+1, which is a 2D trajectories.</li>
+<li>Sort these trajectories by their length.</li>
+</ul>
+<img src="figures/longest_class2D.png",width="400" height="400" />
+<img src="figures/shortest_class2D.png",width="400" height="400" /></p>
+<figcaption>Fig Left: wi-wi+1 plot of the 9 2D-trajectories with longest length. Right: With shortest length.</figcaption>
+
+Browse through. Difficult to see patterns, may need transformations.<br/>
+<video width="500" height="500" controls>
+  <source src="figures/plot2D2.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<h3>3. Learning rate</h3>
+Using 2D trajectories to see the effect of learning rate.<br/>
+Learning rate = 1e-06<br/>
+<img src="figures/r_barchart_s.png",width="300" height="300" />
+<img src="figures/longest_class2D_s.png",width="300" height="300" />
+<video width="300" height="300" controls>
+  <source src="figures/plot2D_s2.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video></p>
+
+Learning rate = 1e-05<br/>
+<img src="figures/r_barchart_m.png",width="300" height="300" />
+<img src="figures/longest_class2D_m.png",width="300" height="300" />
+<video width="300" height="300" controls>
+  <source src="figures/plot2D_m2.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video></p>
+
+Learning rate = 1e-05<br/>
+<img src="figures/r_barchart.png",width="300" height="300" />
+<img src="figures/longest_class2D.png",width="300" height="300" />
+<video width="300" height="300" controls>
+  <source src="figures/plot2D2.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video></p>
+<figcaption>Fig Left: The bar chart of error following the order of the trajectory (r0, r1, ... , r783). Middle: wi-wi+1 plot of the 9 2D-trajectories with longest length. Right: Go through all wi-wi+1 2D-trajectories by the order of their lengths. </figcaption>
+
+<h3>4. Discussions</h3>
+
+<h4>a. Summary:</h4>
+ The last 500 steps concentrated in small areas.<br/>
+ Help us to observe the high dimension trajectories with different learning rate.  <br/>
+
+<h4>b. Color scheme (Diverging vs. Sequential)</h4>
+
+Sequential color scheme<br/>
+If the data has an order in it.<br/>
+<img src="figures/sequential.png",width="150" height="50" /><br/>
+
+Diverging color scheme<br/>
+Put stress on the largest and smallest values.<br/>
+<img src="figures/diverge.png",width="150" height="50" /><br/>
+<img src="figures/r_barchart_c.png",width="300" height="300" />
+<img src="figures/longest_class2D_c.png",width="300" height="300" />
+<video width="300" height="300" controls>
+  <source src="figures/plot2D_c2.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video></p>
+<figcaption>Fig Everything is in sequential color scheme. Left: The bar chart of error following the order of the trajectory (r0, r1, ... , r783). Middle: wi-wi+1 plot of the 9 2D-trajectories with longest length. Right: Go through all wi-wi+1 2D-trajectories by the order of their lengths. </figcaption>
+
+<h4>c. 3D trajectory</h4>
+Not better than 2D trajectories. Everything has to be projected onto a 2D plane.<br/>
+<img src="figures/r_barchart.png",width="300" height="300" />
+<video width="300" height="300" controls>
+  <source src="figures/plot3D2.mp4" type="video/mp4">
+</video></p>
+
+<h2>Visualize the effectiveness of different learning rate</h2>
+
+<h3>Overview</h3>
+
+<ol>
+	<li>Checkbox for selecting different learning rates<img src="figures/Screen%20Shot%202017-04-29%20at%202.47.02%20PM.png"/></li>
+	<li>Three views<img src="figures/Screen%20Shot%202017-04-29%20at%202.47.17%20PM.png"/></li>
+	<li> Enable/disable different learning rates<img src="figures/Screen%20Shot%202017-04-29%20at%202.47.27%20PM.png"/><img src="figures/Screen%20Shot%202017-04-29%20at%202.47.33%20PM.png"/></li>
+	<li> Change the epochs of gradient descent (steps in the trajectory)<img src="figures/Screen%20Shot%202017-04-29%20at%202.47.47%20PM.png"/><img src="figures/Screen%20Shot%202017-04-29%20at%202.47.59%20PM.png"/></li>
+	<li> Display everything<img src="figures/Screen%20Shot%202017-04-29%20at%202.48.24%20PM.png"/></li>
+	<li> Change perspective <img src="figures/Screen%20Shot%202017-04-29%20at%203.07.17%20PM.png"/><img src="figures/Screen%20Shot%202017-04-29%20at%203.07.49%20PM.png"/><img src="figures/Screen%20Shot%202017-04-29%20at%203.08.03%20PM.png"/></li>
+</ol>
+
+<h3>Demo</h3>
+
+<video width="800" height="600" controls>
+  <source src="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/final_demo.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<h3>Data analysis and visualization details</h3>
+
+<ol>
+	<li>Collect learning trajectory of gradient descent with different learning rate 
+
+		<ul>
+			<li>gradient decent in used to optimize a linear SVM for digit classification during the training procedure: <a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/linearSVM.py">source code</a>, <a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/trainingData.txt">training data</a></li>
+			<li>collected data (w0, w1, w2, …, w783, error): <a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/raw_data">coordinates</a>, <a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/raw_data">error values</a></li>
+		</ul></li>
+	<li>Project the points in the first two principle components
+
+		<ul>
+			<li>(w0, w1, w2, …, w783) -&gt; (c0, c1): <a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/pca.py">PCA source code</a></li>
+			<li> projected data (c0, c1, error): <a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/w_front_list.csv">projected coordinates</a>, <a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/r_front_list.csv">error values</a></li>
+		</ul></li>
+	<li>Plot the projected data (<a href="http://web.cse.ohio-state.edu/~jiang.952/courses/5544/final/figure.nb">plot source code</a>)
+
+		<ul>
+			<li>Figure 1 (3D trajectory): c0-&gt;x_axis, c1-&gt;y_axis, error-&gt;z_axis </li>
+			<li>Figure 2 (error value trend)</li>
+			<li>Figure 3 (error value comparison)</li>
+		</ul></li>
+</ol>
+
+</body>
+</html>
+
